@@ -1,8 +1,59 @@
 #include <stdio.h>
-
 // Desafio Batalha Naval - MateCheck
 // Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
 // Siga os comentários para implementar cada parte do desafio.
+
+// Funções para construir as matrizes de habilidade
+void construirHabilidadeCone(int habilidade[5][5]) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if ((i == 0 && j == 2) || (i == 1 && j >= 1 && j <= 3) || (i == 2)) {
+                habilidade[i][j] = 1;
+            } else {
+                habilidade[i][j] = 0;
+            }
+        }
+    }
+}
+
+void construirHabilidadeCruz(int habilidade[5][5]) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (i == 2 || j == 2) {
+                habilidade[i][j] = 1;
+            } else {
+                habilidade[i][j] = 0;
+            }
+        }
+    }
+}
+
+void construirHabilidadeOctaedro(int habilidade[5][5]) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if ((i == 0 && j == 2) || (i == 1 && j >= 1 && j <= 3) || (i == 2 && j == 2)) {
+                habilidade[i][j] = 1;
+            } else {
+                habilidade[i][j] = 0;
+            }
+        }
+    }
+}
+
+// Função para aplicar a habilidade no tabuleiro
+void aplicarHabilidade(int tabuleiro[10][10], int habilidade[5][5], int origemLinha, int origemColuna) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int linhaTabuleiro = origemLinha + i - 2;
+            int colunaTabuleiro = origemColuna + j - 2;
+            if (linhaTabuleiro >= 0 && linhaTabuleiro < 10 && colunaTabuleiro >= 0 && colunaTabuleiro < 10) {
+                if (habilidade[i][j] == 1) {
+                    tabuleiro[linhaTabuleiro][colunaTabuleiro] = 5;
+                }
+            }
+        }
+    }
+}
 
 int main() {
     // Nível Novato - Posicionamento dos Navios
@@ -50,6 +101,19 @@ int main() {
     for (int i = 0; i < 3; i++) {
         tabuleiro[linhaDiagonal2 + i][colunaDiagonal2 - i] = navioDiagonal2[i];
     }
+
+    // Construir e aplicar habilidades
+    int habilidadeCone[5][5];
+    int habilidadeCruz[5][5];
+    int habilidadeOctaedro[5][5];
+
+    construirHabilidadeCone(habilidadeCone);
+    construirHabilidadeCruz(habilidadeCruz);
+    construirHabilidadeOctaedro(habilidadeOctaedro);
+
+    aplicarHabilidade(tabuleiro, habilidadeCone, 2, 2); // Exemplo de ponto de origem (2, 2)
+    aplicarHabilidade(tabuleiro, habilidadeCruz, 5, 5); // Exemplo de ponto de origem (5, 5)
+    aplicarHabilidade(tabuleiro, habilidadeOctaedro, 7, 7); // Exemplo de ponto de origem (7, 7)
 
     // Exibe o tabuleiro no console
     for (int i = 0; i < 10; i++) {
